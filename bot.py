@@ -20,16 +20,24 @@ exchange = ccxt.okx({
     'enableRateLimit': True,
 })
 
-# Set hedge mode
+# === CRITICAL FIX FOR DEMO KEYS ===
+exchange.set_sandbox_mode(True)        # This enables Demo Trading mode
+print("✅ DEMO MODE ENABLED (Sandbox / Simulated Trading)")
+
+# Set hedge mode and leverage (now safe in demo)
 try:
     exchange.set_position_mode(True, SYMBOL)
-except:
-    pass
+    print("✅ Hedge mode set")
+except Exception as e:
+    print(f"⚠️ Position mode: {e}")
 
-# Set leverage
-exchange.set_leverage(LEVERAGE, SYMBOL)
+try:
+    exchange.set_leverage(LEVERAGE, SYMBOL)
+    print(f"✅ Leverage set to {LEVERAGE}x")
+except Exception as e:
+    print(f"⚠️ Leverage: {e}")
 
-print(f"🚀 OKX SMA 14/28 Bot STARTED | {SYMBOL} | {TIMEFRAME} | Leverage {LEVERAGE}x")
+print(f"🚀 OKX SMA 14/28 Bot STARTED | {SYMBOL} | {TIMEFRAME} | Leverage {LEVERAGE}x | DEMO MODE")
 
 last_bar_time = None
 
